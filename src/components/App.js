@@ -5,9 +5,6 @@ import { Main } from './Main.js';
 import { Footer } from './Footer.js';
 import { PopupWithForm } from './PopupWithForm.js';
 import { PopupImage } from './PopupImage.js';
-// import { Card } from './Card.js';
-// import { api } from '../utils/Api.js';
-
 
 function App() {
 

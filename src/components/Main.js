@@ -22,7 +22,6 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
         console.log(err)
       });
 
-    // Получаем карточки с сервера
     api.getInitialCards()
       .then((res) => {
         setCards(res)

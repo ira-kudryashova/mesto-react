@@ -1,5 +1,3 @@
-///import React, { children } from 'react';
-
 function PopupWithForm({ popup, isOpen, title, name, text, children, onClose, onSubmit }) {
 
     const popupOpened = isOpen ? 'popup_opened' : '';
