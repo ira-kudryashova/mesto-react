@@ -15,15 +15,15 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({});
 
   function handleEditProfileClick() {
-    setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
+    setIsEditProfilePopupOpen(true);
   };
 
   function handleEditAvatarClick() {
-    setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
+    setIsEditAvatarPopupOpen(true);
   };
 
   function handleAddPlaceClick() {
-    setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
+    setIsAddPlacePopupOpen(true);
   };
 
   function handleCardClick(card) {
@@ -48,7 +48,8 @@ function App() {
         />
       <Footer />
 
-      <PopupWithForm name="popup-profile"
+      <PopupWithForm
+        name="popup-profile"
         title="Редактировать профиль"
         text="Сохранить"
         isOpen={isEditProfilePopupOpen}
@@ -79,7 +80,8 @@ function App() {
             </fieldset>
         </PopupWithForm>
 
-        <PopupWithForm name="popup-add"
+        <PopupWithForm 
+        name="popup-add"
         title="Новое место"
         text="Создать"
         isOpen={isAddPlacePopupOpen}
@@ -108,11 +110,13 @@ function App() {
             </fieldset>
         </PopupWithForm>
 
-        <PopupWithForm name="popup-delete"
+        <PopupWithForm 
+        name="popup-delete"
         title="Вы уверены?"
         text="Да" />
 
-      <PopupWithForm name="avatar"
+      <PopupWithForm 
+        name="popup-avatar"
         title="Обновить аватар"
         text="Сохранить"
         isOpen={isEditAvatarPopupOpen}

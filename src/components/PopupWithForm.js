@@ -1,6 +1,13 @@
 function PopupWithForm({ popup, isOpen, title, name, text, children, onClose, onSubmit }) {
 
-    const popupOpened = isOpen ? 'popup_opened' : '';
+  const popupOpened = isOpen ? 'popup_opened' : '';
+
+  function handleCloseClick(e) {
+    if ( e.target.classList.contains('popup') || e.target.classList.contains('popup__close')) 
+    {
+      onClose();
+    }
+  }
 
   return (
     <div className={`popup popup_type_${popup} ${popupOpened}`}>
@@ -11,7 +18,7 @@ function PopupWithForm({ popup, isOpen, title, name, text, children, onClose, on
             onSubmit = { onSubmit }
             noValidate>
           
-          <button className='popup__close' type='button' onClick={ onClose } />
+          <button className='popup__close' type='button' onClick={ handleCloseClick } />
           <h2 className='form__name'>{ title }</h2>
 
           {children}

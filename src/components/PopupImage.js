@@ -2,6 +2,14 @@ import React from 'react';
 import '../index.css';
 
 function PopupImage({ card, onClose }) {
+
+  function handleCloseClick(e) {
+    if ( e.target.classList.contains('popup') || e.target.classList.contains('popup__close')) 
+    {
+      onClose();
+    }
+  }
+
   return (
     // <div className={`popup popup-image ${isOpen ? `popup_opened` : ''}`}>
     <div className={`popup popup-image ${card.link ? 'popup_opened' : ''}`}>
@@ -10,7 +18,7 @@ function PopupImage({ card, onClose }) {
           type='button'
           className='popup__close'
           aria-label='Кнопка закрытия попап'
-          onClick={ onClose }
+          onClick={ handleCloseClick }
         />
         <figure className='figure'>
           <img
