@@ -1,7 +1,7 @@
 import React from 'react';
 import '../index.css';
 
-function PopupImage({ card, onClose }) {
+function ImagePopup({ card, onClose }) {
 
   // function handleCloseClick(e) { //TODO: переделать, разные варианты закрытия попап нужно будет прописывать в App
   //   if ( e.target.classList.contains('popup') || e.target.classList.contains('popup__close')) 
@@ -36,4 +36,4 @@ function PopupImage({ card, onClose }) {
   );
 }
 
-export { PopupImage };
+export { ImagePopup };

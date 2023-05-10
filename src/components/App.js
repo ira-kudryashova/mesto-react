@@ -4,7 +4,7 @@ import { Header } from './Header.js';
 import { Main } from './Main.js';
 import { Footer } from './Footer.js';
 import { PopupWithForm } from './PopupWithForm.js';
-import { PopupImage } from './PopupImage.js';
+import { ImagePopup } from './ImagePopup.js';
 
 function App() {
 
@@ -134,7 +134,7 @@ function App() {
             </fieldset>
         </PopupWithForm>
 
-        <PopupImage card={selectedCard} onClose={closeAllPopups} />
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       
       {/* <template id='card__template' /> */}
     </div>
