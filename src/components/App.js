@@ -136,7 +136,7 @@ function App() {
 
         <PopupImage card={selectedCard} onClose={closeAllPopups} />
       
-      <template id='card__template' />
+      {/* <template id='card__template' /> */}
     </div>
   );
 }

@@ -1,13 +1,19 @@
+/** Вынеcли общий компонент попапов */
+/** В этих попапах много общей разметки: элементы внешнего и внутреннего контейнера, сама форма, заголовок и две кнопки. 
+ * Вся общая разметка в новом компоненте */
+
 function PopupWithForm({ popup, isOpen, title, name, text, children, onClose, onSubmit }) {
 
-  const popupOpened = isOpen ? 'popup_opened' : '';
+  const popupOpened = isOpen ? 'popup_opened' : ''; //на основе пропcа isOpen в JSX задается CSS-класс, отвечающий за видимость попапа
+  // Кроме заголовка и идентификатора в компонент PopupWithForm будет передаваться вложенное содержимое в виде JSX-разметки, отличающейся для всех четырёх попапов. 
+  //Внутри самого компонента оно будет доступно через специальный пропс children
 
-  function handleCloseClick(e) {
-    if ( e.target.classList.contains('popup') || e.target.classList.contains('popup__close')) 
-    {
-      onClose();
-    }
-  }
+  // function handleCloseClick(e) { //TODO: переделать, разные варианты закрытия попап нужно будет прописывать в App
+  //   if ( e.target.classList.contains('popup') || e.target.classList.contains('popup__close')) 
+  //   {
+  //     onClose();
+  //   }
+  // }
 
   return (
     <div className={`popup popup_type_${popup} ${popupOpened}`}>
@@ -15,13 +21,13 @@ function PopupWithForm({ popup, isOpen, title, name, text, children, onClose, on
         <form 
             className = 'form'
             name = { name } 
-            onSubmit = { onSubmit }
+            onSubmit = { onSubmit } 
             noValidate>
           
-          <button className='popup__close' type='button' onClick={ handleCloseClick } />
+          <button className='popup__close' type='button' onClick={ onClose } />
           <h2 className='form__name'>{ title }</h2>
 
-          {children}
+          {children} 
 
           <button
             className='form__submit-button'
@@ -38,3 +44,4 @@ function PopupWithForm({ popup, isOpen, title, name, text, children, onClose, on
 }
 
 export { PopupWithForm };
+
