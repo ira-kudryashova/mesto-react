@@ -16,7 +16,7 @@ class Api {
   getUserInfoApi() {
     return fetch(`${this._url}/users/me`, {
       headers: this._headers,
-    }).then(this._getResponseData)
+    }).then(this._getResponseData);
   }
 
   //обновим информацию пользователя
@@ -28,7 +28,7 @@ class Api {
         name: data.name,
         about: data.job,
       }),
-    }).then(this._getResponseData)
+    }).then(this._getResponseData);
   }
 
   //обновим аватар пользователя
@@ -39,14 +39,14 @@ class Api {
       body: JSON.stringify({
         avatar: data.link,
       }),
-    }).then(this._getResponseData)
+    }).then(this._getResponseData);
   }
 
   //получим карточки
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       headers: this._headers,
-    }).then(this._getResponseData)
+    }).then(this._getResponseData);
   }
 
   //добавим новую карточку
@@ -58,7 +58,7 @@ class Api {
         name: data.name,
         link: data.link,
       }),
-    }).then(this._getResponseData)
+    }).then(this._getResponseData);
   }
 
   //удалим карточку
@@ -66,7 +66,7 @@ class Api {
     return fetch(`${this._url}/cards/${_id}`, {
       method: 'DELETE',
       headers: this._headers,
-    }).then(this._getResponseData)
+    }).then(this._getResponseData);
   }
 
   // поставим лайк карточке
@@ -74,7 +74,7 @@ class Api {
     return fetch(`${this._url}/cards/${_id}/likes`, {
       method: 'PUT',
       headers: this._headers,
-    }).then(this._getResponseData)
+    }).then(this._getResponseData);
   }
 
   // удалим лайк с карточки
@@ -82,23 +82,22 @@ class Api {
     return fetch(`${this._url}/cards/${_id}/likes`, {
       method: 'DELETE',
       headers: this._headers,
-    }).then(this._getResponseData)
+    }).then(this._getResponseData);
   }
 
-  // toggleLikeCard(cardId, isCardLiked) {
-  //     return fetch(`${this._url}/cards/${cardId}/likes`, {
-  //       method: isCardLiked ? 'PUT' : 'DELETE',
-  //       headers: {
-  //         authorization: this._authorization,
-  //       },
-  //     })
-  //     .then((res) => {
-  //         if (res.ok) {
-  //             return res.json();
-  //         }
-  //         return Promise.reject(`Ошибка: ${res.status}`);
-  //     })
-  // }
+  toggleLikeCard(_id, isCardLiked) {
+    if (isCardLiked) {
+      return fetch(`${this._url}/cards/${_id}/likes`, {
+        method: 'PUT',
+        headers: this._headers,
+      }).then(this._getResponseData);
+    } else {
+      return fetch(`${this._url}/cards/${_id}/likes`, {
+        method: 'DELETE',
+        headers: this._headers,
+      }).then(this._getResponseData);
+    }
+  }
 }
 
 const api = new Api({
@@ -110,4 +109,3 @@ const api = new Api({
 });
 
 export { api };
-
