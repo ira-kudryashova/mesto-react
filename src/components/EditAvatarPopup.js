@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { PopupWithForm } from "./PopupWithForm.js";
-import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
+import { PopupWithForm } from './PopupWithForm.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
-  const currentUser = useContext(CurrentUserContext); //подписка на контекст
-  const avatarRef = useRef(); //реф для аватара
+  const currentUser = useContext(CurrentUserContext); /** подписка на контекст */
+  const avatarRef = useRef(); /** реф для аватара */
 
   function handleSubmit(e) {
     e.preventDefault();
     onUpdateAvatar({
-      avatar: avatarRef.current.value, /** значение инпута, полученное с помощью рефа */
+      avatar:
+        avatarRef.current
+          .value /** значение инпута, полученное с помощью рефа */,
     });
   }
 
@@ -22,11 +24,11 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
   //   }
   // }, [currentUser, isOpen]);
   useEffect(() => {
-    avatarRef.current.value = ''
+    avatarRef.current.value = '';
   }, [isOpen]);
 
   function handleChangeAvatar() {
-    return avatarRef.current.value
+    return avatarRef.current.value;
   }
 
   return (

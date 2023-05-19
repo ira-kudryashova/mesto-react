@@ -2,21 +2,22 @@ import React, { useContext } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Card({ card, onCardClick, onCardLike, onCardDeleteClick }) {
+  /** подписка на котекст */
+  const currentUser = useContext(CurrentUserContext);
 
-/** подписка на котекст */
-const currentUser = useContext(CurrentUserContext);
+  /** определяем, является ли пользователь владельцем текущей карточки */
+  const isOwn = card.owner._id === currentUser._id;
 
-/** определяем, является ли пользователь владельцем текущей карточки */
-const isOwn = card.owner._id === currentUser._id;
+  /** Создаём переменную, которую после зададим в `className` для кнопки удаления */
+  const cardDeleteButtonClass = `card__trash ${isOwn && 'card__trash_active'}`;
 
-/** Создаём переменную, которую после зададим в `className` для кнопки удаления */
-const cardDeleteButtonClass = (`card__trash ${isOwn && 'card__trash_active'}`);
+  /** Определяем, есть ли у карточки лайк, поставленный текущим пользователем */
+  const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
-/** Определяем, есть ли у карточки лайк, поставленный текущим пользователем */
-const isLiked = card.likes.some((i) => i._id === currentUser._id);
-
-/** Создаём переменную, которую после зададим в `className` для кнопки лайка */
-const cardLikeButtonClassName = (`card__like ${isLiked && 'card__like_active'}`);
+  /** Создаём переменную, которую после зададим в `className` для кнопки лайка */
+  const cardLikeButtonClassName = `card__like ${
+    isLiked && 'card__like_active'
+  }`;
 
   function handleClick() {
     onCardClick(card);
@@ -39,13 +40,14 @@ const cardLikeButtonClassName = (`card__like ${isLiked && 'card__like_active'}`)
           alt={card.name}
           onClick={handleClick}
         />
-       {isOwn && <button /** используем переменную для условного рендеринга в разметке */
-          className={cardDeleteButtonClass}
-          type='button'
-          aria-label='Значок удаления карточки'
-          onClick={handleDeleteClick}
-        />}
-
+        {isOwn && (
+          <button /** используем переменную для условного рендеринга в разметке */
+            className={cardDeleteButtonClass}
+            type='button'
+            aria-label='Значок удаления карточки'
+            onClick={handleDeleteClick}
+          />
+        )}
       </div>
       <div className='card__description'>
         <h2 className='card__name'>{card.name}</h2>

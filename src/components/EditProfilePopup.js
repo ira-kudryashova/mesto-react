@@ -2,14 +2,14 @@ import React, { useState, useContext, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { PopupWithForm } from './PopupWithForm.js';
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser, onSubmit }) { //TODO: добавить ux, добавить закрытие оверлеем
-  const currentUser = useContext(CurrentUserContext); //подписка на контекст
-  
-  const [name, setName] = useState(''); //стейт для пользователя
-  const [description, setDesciption] = useState(''); //стейт для пользователя
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, onSubmit }) { /** TODO: добавить ux, добавить закрытие оверлеем */
+  const currentUser = useContext(CurrentUserContext); /** подписка на контекст */
 
-  useEffect(() => { /** после загрузки текушего пользователя из апи его данные будут использованыв управляемых компонентах */
-    setName(currentUser.name);
+  const [name, setName] = useState(''); /** стейт для пользователя */
+  const [description, setDesciption] = useState(''); /** стейт для пользователя */
+
+  useEffect(() => {
+    setName(currentUser.name); /** после загрузки текушего пользователя из апи его данные будут использованыв управляемых компонентах */
     setDesciption(currentUser.about);
   }, [currentUser, isOpen]);
 
@@ -33,9 +33,9 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, onSubmit }) { //TODO:
     <PopupWithForm
       name='popup-profile'
       title='Редактировать профиль'
-      text='Сохранить' //TODO: добавить ux
+      text='Сохранить' /** TODO: добавить ux */
       isOpen={isOpen}
-      onClose={onClose} //TODO: добавить оверлей
+      onClose={onClose} /** TODO: добавить оверлей */
       onSubmit={handleSubmit}
     >
       <fieldset className='form__input-container'>

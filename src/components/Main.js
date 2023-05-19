@@ -1,18 +1,19 @@
 import React, { useContext } from 'react';
 import { Card } from './Card.js';
-import { CurrentUserContext } from '../contexts/CurrentUserContext.js'
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
-function Main({ 
-  cards, /**список карточек в виде состояние переменноц */
-  onEditProfile, 
-  onEditAvatar, 
-  onAddPlace, 
-  onCardClick, 
-  onCardLike, 
+function Main({
+  cards /**список карточек в виде состояние переменноц */,
+  onEditProfile,
+  onEditAvatar,
+  onAddPlace,
+  onCardClick,
+  onCardLike,
   onCardDeleteClick,
-  onConfirnDelete }) {
-
-  const currentUser = useContext(CurrentUserContext); //подписка на контекст
+  onConfirnDelete,
+}) {
+  const currentUser =
+    useContext(CurrentUserContext); /** подписка на контекст */
   const { name, about, avatar } = currentUser;
 
   return (
@@ -48,15 +49,18 @@ function Main({
           />
         </section>
         <section className='cards' aria-label='Фотографии'>
-          {cards.map((card) => ( //с помощью мапа отрисовываем массив карточек
-            <Card 
-              key={card._id} 
-              card={card} 
-              onCardClick={onCardClick}
-              onCardLike={onCardLike}
-              onCardDeleteClick={onCardDeleteClick}
-              onConfirnDelete={onConfirnDelete} />
-          ))}
+          {cards.map( /** с помощью мапа отрисовываем массив карточек */
+            (card) => (
+              <Card
+                key={card._id}
+                card={card}
+                onCardClick={onCardClick}
+                onCardLike={onCardLike}
+                onCardDeleteClick={onCardDeleteClick}
+                onConfirnDelete={onConfirnDelete}
+              />
+            )
+          )}
         </section>
         {/* <template id='card__template' /> */}
       </main>

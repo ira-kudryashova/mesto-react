@@ -1,4 +1,4 @@
-import React,  { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../index.css';
 import { Header } from './Header.js';
 import { Main } from './Main.js';
@@ -8,8 +8,8 @@ import { api } from '../utils/Api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { EditProfilePopup } from './EditProfilePopup.js';
 import { EditAvatarPopup } from './EditAvatarPopup.js';
-import { AddPlacePopup} from './AddPlacePopup.js';
-import { ConfirmDeletePopup } from  './ConfirmDeletePopup.js';
+import { AddPlacePopup } from './AddPlacePopup.js';
+import { ConfirmDeletePopup } from './ConfirmDeletePopup.js';
 
 function App() {
   /** стейты */
@@ -17,11 +17,11 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] = useState(false);
-  
+
   const [selectedCard, setSelectedCard] = useState({});
-  const [currentUser, setCurrentUser] = useState({});  /** создаем переменную состояния, отвечающую за данные пользователя из апи. Стейт данных текущего пользователя*/
+  const [currentUser, setCurrentUser] = useState({}); /** создаем переменную состояния, отвечающую за данные пользователя из апи. Стейт данных текущего пользователя*/
   const [cards, setCards] = useState([]);
-  const [deletedCard, setDeletedCard] = useState('')
+  const [deletedCard, setDeletedCard] = useState('');
 
   /** эффект при монитровании, который вызывает api.getUserInfoApi и обновляет стейт-переменную */
   useEffect(() => {
@@ -34,9 +34,9 @@ function App() {
         console.log(err);
       });
     api
-      .getInitialCards() //получили массив карточек с апи
+      .getInitialCards() /**получили массив карточек с апи*/
       .then((res) => {
-        setCards(res); //устанавливаем массив в стейт
+        setCards(res); /**устанавливаем массив в стейт*/
       })
       .catch((err) => {
         console.log(err);
@@ -53,8 +53,6 @@ function App() {
   //       console.log(err)
   //     })
   // }, [])
-
-  
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
@@ -79,17 +77,22 @@ function App() {
 
   /** обработчик лайка на карточках */
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id); /** снова проверяем, есть ли уже лайк на карточке */
+    const isLiked = card.likes.some( /** снова проверяем, есть ли уже лайк на карточке */
+      (i) => i._id === currentUser._id
+    );
     api
-      .toggleLikeCard(card._id, !isLiked) /** запрос в апи и получение новых данных карточки */
+      .toggleLikeCard( /** запрос в апи и получение новых данных карточки */
+        card._id,
+        !isLiked
+      )
       .then((newCard) => {
-        setCards((state) => 
+        setCards((state) =>
           state.map((c) => (c._id === card._id ? newCard : c))
         );
       })
       .catch((err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   }
 
   /** обработчик удаления карточки */
@@ -97,7 +100,9 @@ function App() {
     api //TODO: добавить ux
       .removeCardApi(card._id)
       .then(() => {
-        setCards((cards) => cards.filter((c) => c._id !== card._id)); /** обновление стейта cards методом filter после запроса апи: создаем копию масима без удаленной карточки */
+        setCards((cards) => /** обновление стейта cards методом filter после запроса апи: создаем копию масима без удаленной карточки */
+          cards.filter((c) => c._id !== card._id)
+        );
         closeAllPopups();
       })
       .catch((err) => {
@@ -115,7 +120,7 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }
 
   /** обработчик редактирования аватара пользователя */
@@ -128,7 +133,7 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }
 
   /** обработчик добавления новой карточки */
@@ -136,13 +141,16 @@ function App() {
     api
       .addCards(data)
       .then((newCard) => {
-        setCards([newCard, ...cards]); /** обновление стейта cards с помощью расширенной копии текущего массива через оператор '...' */
+        setCards([ /** обновление стейта cards с помощью расширенной копии текущего массива через оператор '...' */
+          newCard,
+          ...cards,
+        ]);
         closeAllPopups();
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
       });
-  };
+  }
 
   /** закрытие всех попап */
   function closeAllPopups() {
@@ -166,34 +174,36 @@ function App() {
           onCardClick={handleCardClick}
           onCardLike={handleCardLike}
           onCardDeleteClick={handleDeleteClick}
-          onConfirmDelete = {handleDeleteClick}
+          onConfirmDelete={handleDeleteClick}
         />
         <Footer />
 
-        <EditProfilePopup 
+        <EditProfilePopup
           isOpen={isEditProfilePopupOpen} //TODO: добавить ux и оверлей лдя всех попап
           onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser} /> 
+          onUpdateUser={handleUpdateUser}
+        />
 
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
-          onAddPlace={handleAddPlaceSubmit} />
+          onAddPlace={handleAddPlaceSubmit}
+        />
 
-        <ConfirmDeletePopup 
+        <ConfirmDeletePopup
           isOpen={isConfirmDeletePopupOpen}
           onClose={closeAllPopups}
           card={deletedCard}
-          onSubmit={handleCardDelete} />
+          onSubmit={handleCardDelete}
+        />
 
-        <EditAvatarPopup 
+        <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
-          onUpdateAvatar={handleUpdateAvatar} />
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
-        <ImagePopup 
-          card={selectedCard} 
-          onClose={closeAllPopups} />
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
         {/* <template id='card__template' /> */}
       </div>
