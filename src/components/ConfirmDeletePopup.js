@@ -1,10 +1,10 @@
 import { PopupWithForm } from './PopupWithForm.js'
 
-function ConfirmDeletePopup({ card, isOpen, onClose, handleDeleteSabmit}) {
+function ConfirmDeletePopup({ card, isOpen, onClose, onSubmit}) {
 
     function handleConfirmDelete(e) {
-        e.prevent.default();
-        handleDeleteSabmit(card);
+        e.preventDefault();
+        onSubmit(card);
     }
 
     return(
@@ -14,7 +14,7 @@ function ConfirmDeletePopup({ card, isOpen, onClose, handleDeleteSabmit}) {
           text='Да'
           isOpen={isOpen}
           onClose={onClose}
-          handleDeleteSabmit={handleConfirmDelete}
+          onSubmit={handleConfirmDelete}
         >
         </PopupWithForm>
     )

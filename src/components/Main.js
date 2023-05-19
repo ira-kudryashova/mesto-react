@@ -1,41 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
-import '../index.css';
-import { api } from '../utils/Api.js';
+import React, { useContext } from 'react';
 import { Card } from './Card.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js'
 
-function Main({ cards, onEditProfile, onEditAvatar, onAddPlace, onCardClick, onCardLike, onCardDeleteClick }) {
-  const currentUser = useContext(CurrentUserContext);
+function Main({ 
+  cards, /**список карточек в виде состояние переменноц */
+  onEditProfile, 
+  onEditAvatar, 
+  onAddPlace, 
+  onCardClick, 
+  onCardLike, 
+  onCardDeleteClick,
+  onConfirnDelete }) {
+
+  const currentUser = useContext(CurrentUserContext); //подписка на контекст
   const { name, about, avatar } = currentUser;
-  // const [userName, setUserName] = useState('');
-  // const [userDescription, setUserDescription] = useState('');
-  // const [userAvatar, setUserAvatar] = useState('');
-
-  //const [cards, setCards] = useState([]); //создали стейт под масив карточек
-
-  // useEffect(() => {
-  //   api
-  //     .getUserInfoApi()
-  //     .then((res) => {
-  //       setUserName(res.name);
-  //       setUserDescription(res.about);
-  //       setUserAvatar(res.avatar);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //    });
-
-  //   api
-  //     .getInitialCards()//получили массив карточек с апи
-  //     .then((res) => {
-  //       setCards(res);//устанавливаем массив в стейт
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
-  //const currentUser = React.useContext(CurrentUserContext);
 
   return (
     <div className='Main'>
@@ -43,7 +21,6 @@ function Main({ cards, onEditProfile, onEditAvatar, onAddPlace, onCardClick, onC
         <section className='profile'>
           <img
             className='profile__avatar'
-            // src='https://images.unsplash.com/photo-1469598614039-ccfeb0a21111?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fG1lbWV8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60'
             src={avatar}
             alt='Аватар пользователя'
           />
@@ -77,10 +54,11 @@ function Main({ cards, onEditProfile, onEditAvatar, onAddPlace, onCardClick, onC
               card={card} 
               onCardClick={onCardClick}
               onCardLike={onCardLike}
-              onCardDeleteClick={onCardDeleteClick} />
+              onCardDeleteClick={onCardDeleteClick}
+              onConfirnDelete={onConfirnDelete} />
           ))}
         </section>
-        <template id='card__template' />
+        {/* <template id='card__template' /> */}
       </main>
     </div>
   );
