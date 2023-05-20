@@ -77,11 +77,13 @@ function App() {
 
   /** обработчик лайка на карточках */
   function handleCardLike(card) {
-    const isLiked = card.likes.some( /** снова проверяем, есть ли уже лайк на карточке */
+    /** снова проверяем, есть ли уже лайк на карточке */
+    const isLiked = card.likes.some(
       (i) => i._id === currentUser._id
     );
+    /** запрос в апи и получение новых данных карточки */
     api
-      .toggleLikeCard( /** запрос в апи и получение новых данных карточки */
+      .toggleLikeCard(
         card._id,
         !isLiked
       )
@@ -100,7 +102,8 @@ function App() {
     api //TODO: добавить ux
       .removeCardApi(card._id)
       .then(() => {
-        setCards((cards) => /** обновление стейта cards методом filter после запроса апи: создаем копию масима без удаленной карточки */
+        /** обновление стейта cards методом filter после запроса апи: создаем копию масима без удаленной карточки */
+        setCards((cards) =>
           cards.filter((c) => c._id !== card._id)
         );
         closeAllPopups();
@@ -141,7 +144,8 @@ function App() {
     api
       .addCards(data)
       .then((newCard) => {
-        setCards([ /** обновление стейта cards с помощью расширенной копии текущего массива через оператор '...' */
+        /** обновление стейта cards с помощью расширенной копии текущего массива через оператор '...' */
+        setCards([
           newCard,
           ...cards,
         ]);
@@ -205,7 +209,6 @@ function App() {
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
-        {/* <template id='card__template' /> */}
       </div>
     </CurrentUserContext.Provider>
   );

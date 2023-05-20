@@ -3,10 +3,14 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { PopupWithForm } from './PopupWithForm.js';
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser, onSubmit }) { /** TODO: добавить ux, добавить закрытие оверлеем */
-  const currentUser = useContext(CurrentUserContext); /** подписка на контекст */
+  /** подписка на контекст */
+  const currentUser = useContext(CurrentUserContext);
 
-  const [name, setName] = useState(''); /** стейт для пользователя */
-  const [description, setDesciption] = useState(''); /** стейт для пользователя */
+  /** стейт для пользователя */
+  const [name, setName] = useState('');
+
+  /** стейт для пользователя */
+  const [description, setDesciption] = useState('');
 
   useEffect(() => {
     setName(currentUser.name); /** после загрузки текушего пользователя из апи его данные будут использованыв управляемых компонентах */
@@ -23,7 +27,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, onSubmit }) { /** TOD
 
   function handleSubmit(e) {
     e.preventDefault();
-    onUpdateUser({ /** передаем значение управляемых компонентов во внешний обработчик */
+    /** передаем значение управляемых компонентов во внешний обработчик */
+    onUpdateUser({
       name: name,
       about: description,
     });

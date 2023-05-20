@@ -9,9 +9,10 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
   function handleSubmit(e) {
     e.preventDefault();
     onUpdateAvatar({
+      /** значение инпута, полученное с помощью рефа */
       avatar:
         avatarRef.current
-          .value /** значение инпута, полученное с помощью рефа */,
+          .value,
     });
   }
 

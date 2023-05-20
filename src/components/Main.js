@@ -62,7 +62,6 @@ function Main({
             )
           )}
         </section>
-        {/* <template id='card__template' /> */}
       </main>
     </div>
   );
