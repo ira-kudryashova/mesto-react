@@ -94,24 +94,6 @@ function App() {
   }
 
   /** обработчик удаления карточки */
-  // function handleCardDelete(card) {
-  //   setIsLoading(true);
-  //   api
-  //     .removeCardApi(card._id)
-  //     .then(() => {
-  //       /** обновление стейта cards методом filter после запроса апи: создаем копию масима без удаленной карточки */
-  //       setCards((cards) =>
-  //         cards.filter((c) => c._id !== card._id)
-  //       );
-  //       closeAllPopups();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     })
-  // }
   function handleCardDelete(card) {
     function makeRequest() {
       return api.removeCardApi(card._id).then(() => {setCards((cards) => cards.filter((c) => c._id !== card._id))
@@ -120,21 +102,6 @@ function App() {
   }
 
   /** обработчик редактирования данных пользователя */
-  // function handleUpdateUser(newUserInfo) {
-  //   setIsLoading(true);
-  //   api
-  //     .editUserInfo(newUserInfo)
-  //     .then((res) => {
-  //       setCurrentUser(res);
-  //       closeAllPopups();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     })
-  // }
   function handleUpdateUser(inputValues) {
     function makeRequest()  {
       return api.editUserInfo(inputValues).then(setCurrentUser);
@@ -143,21 +110,6 @@ function App() {
   }
 
   /** обработчик редактирования аватара пользователя */
-  // function handleUpdateAvatar(data) {
-  //   setIsLoading(true);
-  //   api
-  //     .editUserAvatar(data)
-  //     .then((res) => {
-  //       setCurrentUser(res);
-  //       closeAllPopups();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     })
-  // }
   function handleUpdateAvatar(inputValues) {
     function makeRequest() {
       return api.editUserAvatar(inputValues).then(setCurrentUser);
@@ -167,25 +119,6 @@ function App() {
 
   
   /** обработчик добавления новой карточки */
-  // function handleAddPlaceSubmit(data) {
-  //   setIsLoading(true);
-  //   api
-  //     .addCards(data)
-  //     .then((newCard) => {
-  //       /** обновление стейта cards с помощью расширенной копии текущего массива через оператор '...' */
-  //       setCards([
-  //         newCard,
-  //         ...cards,
-  //       ]);
-  //       closeAllPopups();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     })
-  // }
   function handleAddPlaceSubmit(inputValues) {
     function makeRequest() {
       return api.addCards(inputValues).then((newCard) => {
