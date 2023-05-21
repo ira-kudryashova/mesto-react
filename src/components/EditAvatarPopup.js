@@ -17,8 +17,13 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
   }
 
   useEffect(() => {
-    avatarRef.current.value = '';
-  }, [isOpen]);
+    if (!isOpen) {
+      avatarRef.current.value = currentUser.avatar
+    } else {
+      avatarRef.current.value = ''
+    }
+  }, [currentUser, isOpen]);
+
 
   return (
     <PopupWithForm
