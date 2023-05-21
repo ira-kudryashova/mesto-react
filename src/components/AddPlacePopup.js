@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { PopupWithForm } from './PopupWithForm.js';
+//import { useForm } from '../hooks/useForm.js';
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
+function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
   const [link, setLink] = useState('');
   const [name, setName] = useState('');
+  // const link = useForm();
+  // const name = useForm()
 
   /** данные инпутов */
   function handleEditName(e) {
@@ -32,7 +35,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
     <PopupWithForm
       name='popup-add'
       title='Новое место'
-      text='Создать'
+      text={onLoading? 'Создаем...' : 'Создать'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}

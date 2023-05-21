@@ -5,6 +5,7 @@ import { Main } from './Main.js';
 import { Footer } from './Footer.js';
 import { ImagePopup } from './ImagePopup.js';
 import { api } from '../utils/Api.js';
+import { AppContext } from '../contexts/AppContext.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { EditProfilePopup } from './EditProfilePopup.js';
 import { EditAvatarPopup } from './EditAvatarPopup.js';
@@ -21,38 +22,19 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({}); /** создаем переменную состояния, отвечающую за данные пользователя из апи. Стейт данных текущего пользователя*/
   const [cards, setCards] = useState([]);
-  const [deletedCard, setDeletedCard] = useState('');
+  const [deletedCard, setDeletedCard] = useState({});
+  const [isLoading, setIsLoading] = useState(false); /** переменная для отслеживания состояния загрузки во время ожидания ответа от сервера */
 
-  /** эффект при монитровании, который вызывает api.getUserInfoApi и обновляет стейт-переменную */
   useEffect(() => {
-    api
-      .getUserInfoApi()
-      .then((res) => {
-        setCurrentUser(res);
+    Promise.all([api.getUserInfoApi(), api.getInitialCards()])
+      .then(([currentUser, initialCards]) => {
+        setCurrentUser(currentUser);
+        setCards(initialCards);
       })
       .catch((err) => {
-        console.log(err);
-      });
-    api
-      .getInitialCards() /**получили массив карточек с апи*/
-      .then((res) => {
-        setCards(res); /**устанавливаем массив в стейт*/
+        console.log(err)
       })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  // useEffect(() => {
-  //   Promise.all([api.getUserInfoApi(), api.getInitialCards()])
-  //     .then(([currentUser, initialCards]) => {
-  //       setCurrentUser(currentUser);
-  //       setCards(initialCards);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // }, [])
+  }, [])
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
@@ -97,63 +79,119 @@ function App() {
       });
   }
 
+  /** универсальная функция, которая принимает функцию запроса */
+  function handleSubmit(request) {
+    /** изменяем текст кнопки до вызова запроса */
+    setIsLoading(true);
+    request()
+      /** закрывать попап нужно только в `then` */
+      .then(closeAllPopups)
+      /** в каждом запросе ловим ошибку */
+      /** console.error обычно используется для логирования ошибок, если никакой другой обработки ошибки нет */
+      .catch(console.error)
+      /** в каждом запросе в `finally` возвращаем обратно начальный текст кнопки */
+      .finally(() => setIsLoading(false));
+  }
+
   /** обработчик удаления карточки */
+  // function handleCardDelete(card) {
+  //   setIsLoading(true);
+  //   api
+  //     .removeCardApi(card._id)
+  //     .then(() => {
+  //       /** обновление стейта cards методом filter после запроса апи: создаем копию масима без удаленной карточки */
+  //       setCards((cards) =>
+  //         cards.filter((c) => c._id !== card._id)
+  //       );
+  //       closeAllPopups();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     })
+  // }
   function handleCardDelete(card) {
-    api //TODO: добавить ux
-      .removeCardApi(card._id)
-      .then(() => {
-        /** обновление стейта cards методом filter после запроса апи: создаем копию масима без удаленной карточки */
-        setCards((cards) =>
-          cards.filter((c) => c._id !== card._id)
-        );
-        closeAllPopups();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    function makeRequest() {
+      return api.removeCardApi(card._id).then(() => {setCards((cards) => cards.filter((c) => c._id !== card._id))
+    })}
+    handleSubmit(makeRequest);
   }
 
   /** обработчик редактирования данных пользователя */
-  function handleUpdateUser(newUserInfo) {
-    api
-      .editUserInfo(newUserInfo)
-      .then((res) => {
-        setCurrentUser(res);
-        closeAllPopups();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  // function handleUpdateUser(newUserInfo) {
+  //   setIsLoading(true);
+  //   api
+  //     .editUserInfo(newUserInfo)
+  //     .then((res) => {
+  //       setCurrentUser(res);
+  //       closeAllPopups();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     })
+  // }
+  function handleUpdateUser(inputValues) {
+    function makeRequest()  {
+      return api.editUserInfo(inputValues).then(setCurrentUser);
+    }
+    handleSubmit(makeRequest);
   }
 
   /** обработчик редактирования аватара пользователя */
-  function handleUpdateAvatar(data) {
-    api
-      .editUserAvatar(data)
-      .then((res) => {
-        setCurrentUser(res);
-        closeAllPopups();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  // function handleUpdateAvatar(data) {
+  //   setIsLoading(true);
+  //   api
+  //     .editUserAvatar(data)
+  //     .then((res) => {
+  //       setCurrentUser(res);
+  //       closeAllPopups();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     })
+  // }
+  function handleUpdateAvatar(inputValues) {
+    function makeRequest() {
+      return api.editUserAvatar(inputValues).then(setCurrentUser);
+    }
+    handleSubmit(makeRequest);
   }
 
+  
   /** обработчик добавления новой карточки */
-  function handleAddPlaceSubmit(data) {
-    api
-      .addCards(data)
-      .then((newCard) => {
-        /** обновление стейта cards с помощью расширенной копии текущего массива через оператор '...' */
-        setCards([
-          newCard,
-          ...cards,
-        ]);
-        closeAllPopups();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  // function handleAddPlaceSubmit(data) {
+  //   setIsLoading(true);
+  //   api
+  //     .addCards(data)
+  //     .then((newCard) => {
+  //       /** обновление стейта cards с помощью расширенной копии текущего массива через оператор '...' */
+  //       setCards([
+  //         newCard,
+  //         ...cards,
+  //       ]);
+  //       closeAllPopups();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     })
+  // }
+  function handleAddPlaceSubmit(inputValues) {
+    function makeRequest() {
+      return api.addCards(inputValues).then((newCard) => {
+        setCards([newCard,...cards,]);
+      })}
+    handleSubmit(makeRequest)  
   }
 
   /** закрытие всех попап */
@@ -167,50 +205,59 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className='root'>
-        <Header />
-        <Main
-          onEditProfile={handleEditProfileClick}
-          onEditAvatar={handleEditAvatarClick}
-          onAddPlace={handleAddPlaceClick}
-          cards={cards}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDeleteClick={handleDeleteClick}
-          onConfirmDelete={handleDeleteClick}
-        />
-        <Footer />
+    <AppContext.Provider value = {{ isLoading, closeAllPopups }}>
+      <CurrentUserContext.Provider value={currentUser}>
+        <div className='root'>
+          <Header />
+          <Main
+            onEditProfile={handleEditProfileClick}
+            onEditAvatar={handleEditAvatarClick}
+            onAddPlace={handleAddPlaceClick}
+            cards={cards}
+            onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            onCardDeleteClick={handleDeleteClick}
+            onConfirmDelete={handleDeleteClick}
+          />
+          <Footer />
 
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen} //TODO: добавить ux и оверлей лдя всех попап
-          onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser}
-        />
+          <EditProfilePopup
+            isOpen={isEditProfilePopupOpen} //TODO: добавить ux и оверлей лдя всех попап
+            onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser}
+            onLoading={isLoading}
+          />
 
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          onAddPlace={handleAddPlaceSubmit}
-        />
+          <AddPlacePopup
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopups}
+            onAddPlace={handleAddPlaceSubmit}
+            onLoading={isLoading}
+          />
 
-        <ConfirmDeletePopup
-          isOpen={isConfirmDeletePopupOpen}
-          onClose={closeAllPopups}
-          card={deletedCard}
-          onSubmit={handleCardDelete}
-        />
+          <ConfirmDeletePopup
+            isOpen={isConfirmDeletePopupOpen}
+            onClose={closeAllPopups}
+            card={deletedCard}
+            onSubmit={handleCardDelete}
+            onLoading={isLoading}
+          />
 
-        <EditAvatarPopup
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          onUpdateAvatar={handleUpdateAvatar}
-        />
+          <EditAvatarPopup
+            isOpen={isEditAvatarPopupOpen}
+            onClose={closeAllPopups}
+            onUpdateAvatar={handleUpdateAvatar}
+            onLoading={isLoading}
+          />
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          <ImagePopup 
+            card={selectedCard}
+            onClose={closeAllPopups}
+            />
 
-      </div>
-    </CurrentUserContext.Provider>
+        </div>
+      </CurrentUserContext.Provider>
+    </AppContext.Provider>
   );
 }
 

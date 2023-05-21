@@ -1,8 +1,9 @@
 /** Вынеcли общий компонент попапов */
 /** В этих попапах много общей разметки: элементы внешнего и внутреннего контейнера, сама форма, заголовок и две кнопки. Вся общая разметка в новом компоненте */
+import React from "react";
+import { usePopupClose } from "../hooks/usePopupClose.js";
 
 function PopupWithForm({
-  popup,
   isOpen,
   title,
   name,
@@ -17,8 +18,10 @@ function PopupWithForm({
 
   return (
     <div className={`popup ${popupOpened}`}>
+    onClick={ usePopupClose(isOpen, onClose) }
+
       <div className='popup__container'>
-        <form className='form' name={name} onSubmit={onSubmit} noValidate>
+        <form className='form' name={name} onSubmit={onSubmit}>
           <button className='popup__close' type='button' onClick={onClose} />
           <h2 className='form__name'>{title}</h2>
 
@@ -28,7 +31,6 @@ function PopupWithForm({
             className='form__submit-button'
             type='submit'
             aria-label='Кнопка сохранения изменений в профиле'
-            //disabled
           >
             {text || 'Сохранить'}
           </button>

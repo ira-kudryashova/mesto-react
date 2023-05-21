@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { PopupWithForm } from './PopupWithForm.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
   const currentUser = useContext(CurrentUserContext); /** подписка на контекст */
   const avatarRef = useRef(); /** реф для аватара */
 
@@ -16,27 +16,15 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     });
   }
 
-  /** чистим инпуты */
-  // useEffect(() => {
-  //   if (!isOpen) {
-  //     avatarRef.current.value = currentUser.avatar;
-  //   } else {
-  //     avatarRef.current.value = '';
-  //   }
-  // }, [currentUser, isOpen]);
   useEffect(() => {
     avatarRef.current.value = '';
   }, [isOpen]);
-
-  function handleChangeAvatar() {
-    return avatarRef.current.value;
-  }
 
   return (
     <PopupWithForm
       name='popup-avatar'
       title='Обновить аватар'
-      text='Сохранить'
+      text={isLoading? 'Сохраненяем...' : 'Сохранить'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
@@ -50,7 +38,6 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
           placeholder='Ссылка на картинку'
           required
           ref={avatarRef}
-          onChange={handleChangeAvatar}
         />
         <span className='form__item-error link-avatar-input-error' />
       </fieldset>

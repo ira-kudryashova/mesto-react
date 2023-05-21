@@ -1,19 +1,13 @@
 import React from 'react';
 import '../index.css';
+import { usePopupClose } from '../hooks/usePopupClose';
 
 function ImagePopup({ card, onClose }) {
-  // function handleCloseClick(e) { //TODO: переделать, разные варианты закрытия попап нужно будет прописывать в App
-  //   if ( e.target.classList.contains('popup') || e.target.classList.contains('popup__close'))
-  //   {
-  //     onClose();
-  //   }
-  // }
 
   return (
-    // <div className={`popup popup-image ${isOpen ? `popup_opened` : ''}`}>
     <div
       className={`popup popup-image ${card.link ? 'popup_opened' : ''}`}
-      //onClick={ onClose }
+      onClick={ usePopupClose(card.link, onClose) }
     >
       <div className='popup-image__container'>
         <button

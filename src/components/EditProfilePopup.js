@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { PopupWithForm } from './PopupWithForm.js';
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser, onSubmit }) { /** TODO: добавить ux, добавить закрытие оверлеем */
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoading }) { /** TODO: добавить ux, добавить закрытие оверлеем */
   /** подписка на контекст */
   const currentUser = useContext(CurrentUserContext);
 
@@ -38,7 +38,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, onSubmit }) { /** TOD
     <PopupWithForm
       name='popup-profile'
       title='Редактировать профиль'
-      text='Сохранить' /** TODO: добавить ux */
+      text={onLoading? 'Сохраненяем...' : 'Сохранить'}
       isOpen={isOpen}
       onClose={onClose} /** TODO: добавить оверлей */
       onSubmit={handleSubmit}
