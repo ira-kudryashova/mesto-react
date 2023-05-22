@@ -5,7 +5,6 @@ function Header() {
   return (
     <div className='Header'>
       <header className='header'>
-        {/* <img className='header__logo' src='<%=require('./images/logo.svg')%>' alt='логотип сайта Место' /> */}
         <img className='header__logo' src={logo} alt='логотип сайта Место' />
       </header>
     </div>

@@ -3,11 +3,11 @@ import '../index.css';
 import { usePopupClose } from '../hooks/usePopupClose';
 
 function ImagePopup({ card, onClose }) {
+  usePopupClose(card.link, onClose);
 
   return (
     <div
       className={`popup popup-image ${card.link ? 'popup_opened' : ''}`}
-      onClick={ usePopupClose(card.link, onClose) }
     >
       <div className='popup-image__container'>
         <button
