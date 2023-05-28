@@ -1,34 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { PopupWithForm } from './PopupWithForm.js';
-//import { useForm } from '../hooks/useForm.js';
+import { useForm } from '../hooks/useForm.js';
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
-  const [link, setLink] = useState('');
-  const [name, setName] = useState('');
+  // const [link, setLink] = useState('');
+  // const [name, setName] = useState('');
   // const link = useForm();
   // const name = useForm()
 
-  /** данные инпутов */
-  function handleEditName(e) {
-    setName(e.target.value);
-  }
+  const {values, handleChange, setValues} = useForm({}); 
 
-  function handleEditlink(e) {
-    setLink(e.target.value);
-  }
+  /** данные инпутов */
+  // function handleEditName(e) {
+  //   setName(e.target.value);
+  // }
+
+  // function handleEditlink(e) {
+  //   setLink(e.target.value);
+  // }
 
   function handleSubmit(e) {
     e.preventDefault();
     onAddPlace({
-      name: name,
-      link: link,
+      name: values.name,
+      link: values.link,
     });
   }
 
   /** чистим инпуты */
   useEffect(() => {
-    setLink('');
-    setName('');
+    setValues({
+      link: (''),
+      name: ('')
+    })
   }, [isOpen]);
 
   return (
@@ -50,8 +54,9 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
           minLength={2}
           maxLength={30}
           required
-          value={name}
-          onChange={handleEditName}
+          value={values.name}
+          //onChange={handleEditName}
+          onChange={handleChange}
         />
         <span className='form__item-error cardname-input-error' />
         <input
@@ -61,8 +66,9 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
           className='form__item form__item_image_link'
           placeholder='Ссылка на картинку'
           required
-          value={link}
-          onChange={handleEditlink}
+          value={values.link}
+          //onChange={handleEditlink}
+          onChange={handleChange}
         />
         <span className='form__item-error link-input-error' />
       </fieldset>
